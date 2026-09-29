@@ -37,25 +37,6 @@ def tokenize(text: str) -> Sequence[str] | None:
 
     return tokens
 
-    if not isinstance(text, str):
-        return None
-
-    tokens = []
-    current_word = ""
-
-    for char in text:
-        if char.isalpha():
-            current_word += char.lower()
-        elif char.isspace():
-            if current_word:
-                tokens.append(current_word)
-                current_word = ""
-
-    if current_word:
-        tokens.append(current_word)
-
-    return tokens
-
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
     """
@@ -119,7 +100,6 @@ def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | 
     Returns:
         Sequence[str] | None: Sequence of the most common words.
         Returns None in case of incorrect input types or non-positive top_n.
-
     """
     if not all([isinstance(freq_dict, dict),
                 isinstance(top_n, int)]):
@@ -302,30 +282,6 @@ def detect_language_by_top_n(
 
     return sorted_list[0]
 
-    if (not isinstance(top_n, int) or
-            isinstance(top_n, bool) or
-            top_n <= 0):
-        return None
-
-    if (not check_profile(unknown_profile) or not check_profile(profile_1) or
-            not check_profile(profile_2)):
-        return None
-
-    score_1 = compare_profiles_by_top_n(unknown_profile, profile_1, top_n)
-    score_2 = compare_profiles_by_top_n(unknown_profile, profile_2, top_n)
-    result = None
-
-    if score_1 is not None and score_2 is not None:
-        if score_1 > score_2:
-            result = profile_1[0]
-        elif score_2 > score_1:
-            result = profile_2[0]
-        elif profile_1[0] < profile_2[0]:
-            result = profile_1[0]
-        else:
-            result = profile_2[0]
-
-    return result
 
 # Mark 8
 
